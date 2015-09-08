@@ -3,8 +3,6 @@
 # Jining Qin
 # jiningq
 
-cd("dropbox/computing")
-pwd()
 # generating input
 using Distributions
 
