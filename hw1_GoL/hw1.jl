@@ -3,7 +3,7 @@
 # trying to change the representation of game of life
 # maintaining only a list of live cells, adding the
 # game on hexagonal plane
-cd("dropbox/computing")
+
 
 using Distributions
 
@@ -14,7 +14,7 @@ print(A)
 #print(A)
 
 # function that checks whether a cell(given its coordinates) is alive currently
-# consider using dictionary??
+# it is a list of tuples
 function check_stat(x,y,A)
   if (x,y) in A
     return 1
@@ -25,7 +25,8 @@ end
 #check_stat(8,-25,A)
 
 # function that returns all neighbours of a cell given its
-
+# input: x, y coordinate of cell, and geometry, "sq" for square grids
+#        "hex" for hexagons
 function get_neighbour(x,y,dim="sq")
   B=(setdiff([(i,j) for i=x-1:x+1, j=y-1:y+1],[(x,y)]))
   if dim=="sq"
@@ -38,6 +39,7 @@ end
 
 #print(get_neighbour(0,0,"sq"))
 
+## cell evolution function for the game
 function cell_evol(x,y,A)
   l=0
   for ii in get_neighbour(x,y)
@@ -53,6 +55,8 @@ end
 
 #print(cell_evol(0,2,A))
 
+
+## map evolution function, iterating through all live cells and their neighbours
 function map_evol(A,dim="sq")
   map=A
   res=[]
@@ -69,6 +73,7 @@ end
 
 #print(map_evol(A,"hex"))
 
+## takes in list of live cells and output the result of evolution after n generations
 function gen_evol(A,n::Integer,dim="sq")
   for i in 1:n
     A=map_evol(A,dim)
