@@ -87,10 +87,4 @@ drawit=function(x)
 		}
 	}
 }
-#Use the function from animation to make the final movie
-a=proc.time()
-saveVideo({
-    finaldraw(0,200)
-	ani.options(interval = 0.1, nmax = 230)
-}, video.name = "2.mp4", other.opts = "-b 500k")
-proc.time()-a
+drawit(2)
