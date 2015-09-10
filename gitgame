@@ -1,0 +1,63 @@
+# 36-750 Git Game Homework
+# Jining Qin
+
+# level 1
+
+git clone https://github.com/hgarc014/git-game.git
+cd git-game
+git log
+git checkout 640273807f9bac8af03575f82b788663d4b99927
+
+# level 2
+git checkout bug
+
+# level 3
+
+git blame cool.cpp
+git checkout LinusTorvalds2014
+
+# level 4
+
+cat .gitignore
+
+# level 5
+
+git checkout tree
+
+# level 6
+
+./outputclue.sh nextclue_input.cpp
+
+# level 7
+
+
+git merge origin/code4life
+git add nextclue_input.cpp
+git commit
+./outputclue.sh nextclue_input.cpp
+
+# level 8
+
+git checkout mouse
+git diff mouse bug -- remember
+git checkout Henry
+
+# level 9
+
+git tag whatever Henry
+git tag -d Henry
+git checkout Henry
+
+# level 10
+
+git remote -v
+git remote add upstream https://github.com/drami025/git-game.git
+git remote -v
+
+
+git fetch upstream
+git checkout master
+git merge upstream/master
+
+
+
