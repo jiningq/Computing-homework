@@ -83,7 +83,7 @@ drawit=function(x)
 	plot(round(sqrt(3)*(min(A)-1)):round(sqrt(3)*(max(A)-1)),round(sqrt(3)*(min(A)-1)):round(sqrt(3)*(max(A)-1)),type="n")
 	for ( i in min(A):max(A)){
 		for ( j in min(A):max(A)){
-			if(j%%2==1){plot_hex(sqrt(3)*i+sqrt(3)/2,1.5*j,vec_scan(i,j,A))}else{plot_hex(sqrt(3)*i,1.5*j,vec_scan(i,j,A))}
+			if(j%%2==1){plot_hex(sqrt(3)*i-sqrt(3)/2,1.5*j,vec_scan(i,j,A))}else{plot_hex(sqrt(3)*i,1.5*j,vec_scan(i,j,A))}
 		}
 	}
 }
@@ -94,3 +94,5 @@ saveVideo({
 	ani.options(interval = 0.1, nmax = 230)
 }, video.name = "2.mp4", other.opts = "-b 500k")
 proc.time()-a
+
+getwd()
