@@ -15,18 +15,18 @@
 using Base.Test
 
 function maxSubSum(x)
-  current_max=global_max=0
+  current_max = global_max = 0
   for ii in x
-    current_max=max(0,current_max+ii)
-    global_max=max(current_max,global_max)
+    current_max = max(0, current_max+ii)
+    global_max = max(current_max, global_max)
   end
   return global_max
 end
 
 
-@test maxSubSum([1,2,3,4])==10
-@test maxSubSum([-1,-2,-3,-4])==0
-@test maxSubSum([-1,1,-1,1,-1,1,-1,1])==1
-@test maxSubSum([31,-41,59,26,-53,58,97,-93,-23,84])==187
-@test maxSubSum([1.2,2.4,-3.6,4.8,6.0,-2.0,7.2,-9.6])==16.0
+@test maxSubSum([1, 2, 3, 4]) == 10
+@test maxSubSum([-1, -2, -3, -4]) == 0
+@test maxSubSum([-1, 1, -1, 1, -1, 1, -1, 1]) == 1
+@test maxSubSum([31,-41,59,26,-53,58,97,-93,-23,84]) == 187
+@test maxSubSum([1.2, 2.4, -3.6, 4.8, 6.0, -2.0, 7.2, -9.6]) == 16.0
 
