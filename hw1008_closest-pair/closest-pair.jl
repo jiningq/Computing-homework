@@ -30,8 +30,30 @@ end
 ## the function takes two vectors, the x-coordinates of points and y-coordinates of points as input
 ## the function outputs a tuple, the first element being the minumum distance
 ## the second element is a vector of points pairs, each being a tuple consisting of two vector
-## I defined the ClosestSplitPair function insie the ClosestPair function since Julia uses lexical scoping
-## and I need the variables defined within function ClosestPair
+## I defined the ClosestSplitPair function to find the close pairs between left and right half of
+## the point set.
+##
+function ClosestSplitPair(Px:: Array{Float64, 1}, Py:: Array{Float64, 1}, delta::Float64, med_id:: Integer, order_x, order_y)
+  Sy_id = order_y[ (Px .>= Px[order_x[med_id]] - delta) & (Px .<= Px[order_x[med_id]] + delta) ]
+  best = Inf
+  best_pair = []
+  if length(Sy_id) > 7
+    ceil_i = length(Sy_id) - 7
+  else
+    ceil_i = length(Sy_id) - 1
+  end
+  for i in 1 : ceil_i
+    for j in 1 : minimum([7, length(Sy_id)-i])
+      p = [Px[Sy_id[i]], Py[Sy_id[i]]]
+      q = [Px[Sy_id[i + j]], Py[Sy_id[i + j]]]
+      if euclidean(p, q) <= delta
+        best_pair = [best_pair, (p, q)]
+        best = euclidean(p, q)
+      end
+    end
+  end
+  return (best, best_pair)
+end
 
 
 function ClosestPair(X, Y)
@@ -45,28 +67,6 @@ function ClosestPair(X, Y)
   order_y = sortperm(Py)
   order_x = sortperm(Px)
 
-  function ClosestSplitPair(Px:: Array{Float64, 1}, Py:: Array{Float64, 1}, delta::Float64, med_id:: Integer)
-    Sy_id = order_y[ (Px .>= Px[order_x[med_id]] - delta) & (Px .<= Px[order_x[med_id]] + delta) ]
-    best = Inf
-    best_pair = []
-    if length(Sy_id) > 7
-      ceil_i = length(Sy_id) - 7
-    else
-      ceil_i = length(Sy_id) - 1
-    end
-    for i in 1 : ceil_i
-      for j in 1 : minimum([7, length(Sy_id)-i])
-        p = [Px[Sy_id[i]], Py[Sy_id[i]]]
-        q = [Px[Sy_id[i + j]], Py[Sy_id[i + j]]]
-        if euclidean(p, q) <= delta
-          best_pair = [best_pair, (p, q)]
-          best = euclidean(p, q)
-        end
-      end
-    end
-    return (best, best_pair)
-  end
-
   if length(Px) == 1
     return (Inf, [([0, 0], [0, 0])])
   elseif length(Px) == 2
@@ -77,7 +77,7 @@ function ClosestPair(X, Y)
                       Py[order_x[1 : med_id]])
     d2 = ClosestPair(Px[order_x[(med_id + 1) : end]],
                       Py[order_x[(med_id + 1) : end]])
-    d3 = ClosestSplitPair(Px, Py, minimum([d1[1], d2[1]]), med_id)
+    d3 = ClosestSplitPair(Px, Py, minimum([d1[1], d2[1]]), med_id, order_x, order_y)
     return optim_merge(d1,d2,d3)
   end
 end

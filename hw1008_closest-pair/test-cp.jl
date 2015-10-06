@@ -1,6 +1,7 @@
 using Base.Test
 include("closest-pair.jl")
 
+cd("dropbox/computing")
 @test_throws ArgumentError ClosestPair([1.0],[2,3])
 @test ClosestPair([1], [1])[1] == Inf
 @test length(ClosestPair([1, 2, 3, 4], [0, 0, 0, 0])[2]) == 3
@@ -8,7 +9,8 @@ include("closest-pair.jl")
 
 
 dat = readdlm("closest-pairs1.txt")
-println(string("Time used:", ( @elapsed result = ClosestPair(dat[:, 1], dat[:, 2])), "seconds."))
+println(string("Time used: ", ( @elapsed result = ClosestPair(dat[:, 1], dat[:, 2])), " seconds."))
+# Time used: 3.003797431 seconds.
 print_res(result)
 
 
