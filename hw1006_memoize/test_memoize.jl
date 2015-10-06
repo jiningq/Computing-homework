@@ -4,7 +4,7 @@ fibonacci = memoize(fib)
 fibonacci(10)
 
 function test_memoize(x)
-  for jj in 1 : integer(x)
+  for jj in 1:integer(x)
   @assert fib(jj) == fibonacci(jj)
   end
   return(string("First ", x, " values match for two versions of the function."))

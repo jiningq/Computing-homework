@@ -1,7 +1,5 @@
 using PyPlot
 
-# have the call the function one time so that Julia 'compiles' it
-
 include("memoize.jl")
 fib(5)
 fibonacci = memoize(fib)
@@ -10,13 +8,16 @@ fibonacci(10)
 function time_memoize(x)
   n = integer(x)
   time_naive = zeros(n)
-  time_mem = zeros(n)
+  time_mem1 = zeros(n)
+  time_mem2 = zeros(n)
   for jj in 1 : n
     time_naive[jj] = (@elapsed fib(jj))
     time_mem[jj] = (@elapsed fibonacci(jj))
+    time_mem2[jj] = (@elapsed fib2(jj))
   end
   plot(1:n, log(time_naive))
-  plot(1:n, log(time_mem))
+  plot(1:n, log(time_mem1))
+  plot(1:n, log(time_mem2))
   legend()
   show()
 end
