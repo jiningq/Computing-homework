@@ -1,4 +1,5 @@
-# Throughout the problem I maintain a hashtable mapping with at most K key-value pairs.
+# Throughout the problem I maintain a hashtable mapping breed IDs to their location
+# with at most K key-value pairs.
 # With each new now coming in, if its breed id is a key of the hashtable, then
 # it is within K of the last cow of the same breed. If its breed id isn't a key,
 # then either the hashtable isn't full (has K pairs) and this cow and its location is
