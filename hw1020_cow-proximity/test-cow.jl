@@ -7,6 +7,7 @@ include("cow-proximity.jl")
 @test crowded_cows([7,3,1,0,4,2,16,28,3,4],3) == -1
 println("All unit tests passed.")
 
+length(unique(cows))
 # cows = int(readdlm("cows.txt"))
 println("Testing on input file...")
 cows = int(readdlm(ARGS[1]))

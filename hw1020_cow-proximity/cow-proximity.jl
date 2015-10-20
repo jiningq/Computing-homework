@@ -27,3 +27,27 @@ end
   end
   return max_id
 end
+
+function crowded_cows1(cow_list::Array, K::Integer)
+  if length(cow_list) <= K
+    throw(ArgumentError("Number of cows need to be bigger than K!"))
+  end
+
+  max_id = -1
+  dict = [cow_list[1] => 1]
+  for ii in 2:length(cow_list)
+    if haskey(dict, cow_list[ii])
+      if ii- dict[cow_list[ii]] <= K
+        max_id = maximum([cow_list[ii], max_id])
+      end
+    end
+    dict[cow_list[ii]] = ii
+  end
+  return max_id
+end
+
+cows = int(readdlm("cows.txt"))
+crowded_cows1(cows, 25000)
+@elapsed crowded_cows1(cows, 25000)
+# Result now is 503739.
+# Takes about 0.01 second.
