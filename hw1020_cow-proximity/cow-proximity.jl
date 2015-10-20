@@ -16,17 +16,23 @@ function crowded_cows(cow_list::Array, K::Integer)
   for ii in 2:length(cow_list)
     if haskey(dict, cow_list[ii])
       max_id = maximum([cow_list[ii], max_id])
-      delete!(dict, cow_list[ii])
-      dict[cow_list[ii]] = ii
-    elseif length(keys(dict)) < K
-      dict[cow_list[ii]] = ii
-    else
-      dict[cow_list[ii]] = ii
-      delete!(dict, cow_list[ii-K])
-end
+    elseif length(keys(dict)) >= K
+      delete!(dict, sort(collect(dict), by = tuple -> last(tuple))[1][1])
+    end
+    dict[cow_list[ii]] = ii
   end
   return max_id
 end
+
+# Turns out I need to search through the dictionary in each iteration after the
+# list is 'full'. This method takes up less space but is awfully inefficient.
+# Revised solution below.
+
+
+# Maintain a hashtable mapping a cow's breed ID to its location.
+# It is always updated to reflect the location of the most recently seen
+# cow of this breed. The max_id variable is updated if the appearance of
+# this cow is seen twice within K distance.
 
 function crowded_cows1(cow_list::Array, K::Integer)
   if length(cow_list) <= K
@@ -45,9 +51,3 @@ function crowded_cows1(cow_list::Array, K::Integer)
   end
   return max_id
 end
-
-cows = int(readdlm("cows.txt"))
-crowded_cows1(cows, 25000)
-@elapsed crowded_cows1(cows, 25000)
-# Result now is 503739.
-# Takes about 0.01 second.
