@@ -4,7 +4,7 @@ function toggle(x)
 end
 
 # Naive implementation of repeated updating
-function rep_toggle(x::Array, B::Number, update::Function = toggle)
+function rep_toggle(x::Array, B::Integer, update::Function = toggle)
   y = copy(x)
   for i in 1:B
     y = update(y)
@@ -12,9 +12,7 @@ function rep_toggle(x::Array, B::Number, update::Function = toggle)
   y
 end
 
-rep_toggle([1,0,0,0,0],1.0)
-
-# @elapsed rep_toggle(x, 10^6)
+# @time rep_toggle([1, 0, 0, 0, 0], 10^6)
 # takes 10 seconds for 10^6 iterations, will take 10^10 seconds for 10^15 iterations
 
 
@@ -23,11 +21,7 @@ rep_toggle([1,0,0,0,0],1.0)
 # then we can find the period and we only need to run the rest number
 # of steps mod the period.
 
-function blink(x::Array, B::Number, update = toggle)
-  if B < 0 || mod(B, 1) != 0
-    throw(ArgumentError("B needs to be a positive integer!"))
-  end
-
+function blink(x::Array, B::Integer, update = toggle)
   i = 0
   y = copy(x)
   period = 0
@@ -51,5 +45,6 @@ function blink(x::Array, B::Number, update = toggle)
   return y
 end
 
-# @elapsed print(blink([1,0,0,0,0], 10^15))
+
+# @time print(blink([1,0,0,0,0], 10^15))
 # takes less than one second to evaluate 10 ^ 15 steps
