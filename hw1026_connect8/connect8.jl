@@ -78,6 +78,8 @@ df1 = findContiguousClumps(test, 0.5)
 maximum(df1[:clump_id])
 # 1
 # i.e. at 0.5 threshold level, there is only one connected component
+# consisting of 91 pixels
+
 print(df1)
 # 91x3 DataFrame
 # | Row | x_pixel | y_pixel | clump_id |
@@ -105,6 +107,15 @@ df2 = findContiguousClumps(test, 0.8)
 maximum(df2[:clump_id])
 # 2
 # i.e. under 0.8 threshold level, there are 2 connected components
+
+print(by(df2, :clump_id, nrow))
+# 2x2 DataFrame
+# | Row | clump_id | x1 |
+# |-----|----------|----|
+# | 1   | 1        | 13 |
+# | 2   | 2        | 17 |
+# 13 pixels are in the first component and 17 are in the second
+
 print(df2)
 # 30x3 DataFrame
 # | Row | x_pixel | y_pixel | clump_id |
@@ -127,6 +138,7 @@ print(df2)
 # | 28  | 6       | 11      | 2        |
 # | 29  | 7       | 12      | 2        |
 # | 30  | 9       | 5       | 1        |
+
 image = [0 1 2; 0 0 1; 1 0 0]
 print(findContiguousClumps(image, 0.5))
 # 4x3 DataFrame
@@ -136,6 +148,8 @@ print(findContiguousClumps(image, 0.5))
 # | 2   | 2       | 3       | 1        |
 # | 3   | 3       | 1       | 2        |
 # | 4   | 1       | 3       | 1        |
+
+# function gives the expected outcome on the sample input
 
 
 
