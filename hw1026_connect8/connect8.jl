@@ -63,11 +63,15 @@ function findContiguousClumps(image, thres, connectRule = getNeighbour8)
     end
   end
 
-  result = DataFrame(x_pixel = Int64[], y_pixel = Int64[], clump_id = Int64[])
+  n = length(keys(pointLab))
+  result = DataFrame(x_pixel = int(zeros(n)), y_pixel = int(zeros(n)), clump_id = int(zeros(n)))
+
+  ii = 0
   for key in keys(pointLab)
-    push!(result, [key[1] key[2] pointLab[key]])
+    ii = ii + 1
+    result[ii, :] = convert(DataFrame, [key[1] key[2] pointLab[key]])
   end
-  result
+  return result
 end
 
 test = reshape(readdlm("connect8.txt"), 20, 20)
