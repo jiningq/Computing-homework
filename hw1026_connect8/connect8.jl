@@ -42,20 +42,20 @@ end
 
 function findContiguousClumps(image, thres, connectRule = getNeighbour8)
   curLab = 1
-  dict = Dict()
+  pointLab = Dict()
   pointList = findmat(x -> x > thres, image)
-  q = Queue((Int,Int))
+  pointQueue = Queue((Int,Int))
 
   for ii in pointList
-    if !haskey(dict, ii)
-      dict[ii] = curLab
-      enqueue!(q, ii)
-      while length(q) > 0
-        jj = dequeue!(q)
+    if !haskey(pointLab, ii)
+      pointLab[ii] = curLab
+      enqueue!(pointQueue, ii)
+      while length(pointQueue) > 0
+        jj = dequeue!(pointQueue)
         for kk in intersect(getNeighbour8(jj, size(image)), pointList)
-          if !haskey(dict, kk)
-            enqueue!(q, kk)
-            dict[kk] = curLab
+          if !haskey(pointLab, kk)
+            enqueue!(pointQueue, kk)
+            pointLab[kk] = curLab
           end
         end
       end
@@ -63,12 +63,10 @@ function findContiguousClumps(image, thres, connectRule = getNeighbour8)
     end
   end
 
-  df = []
-  for key in keys(dict)
-    df = [df; [key[1], key[2], dict[key]]]
+  result = DataFrame(x_pixel = Int64[], y_pixel = Int64[], clump_id = Int64[])
+  for key in keys(pointLab)
+    push!(result, [key[1] key[2] pointLab[key]])
   end
-  result = convert(DataFrame, transpose(reshape(df, 3, length(keys(dict)))))
-  names!(result, [symbol("x_pixel"), symbol("y_pixel"), symbol("clump_id")])
   result
 end
 
@@ -150,9 +148,6 @@ print(findContiguousClumps(image, 0.5))
 # | 4   | 1       | 3       | 1        |
 
 # function gives the expected outcome on the sample input
-
-
-
 
 
 
