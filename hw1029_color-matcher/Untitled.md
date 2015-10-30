@@ -1,5 +1,13 @@
 
 
+    # Since the RGB isn't perceptually uniform, I convert all the color representation into the LAB color space
+    # which is supposed to be perfectually uniform. The difference in color is measured by Euclidean distance
+    # between difference colors' LAB vector. The 'best match' is means the color with smallest difference from
+    # the target. 
+    
+    # The computation part is effectively a (1-)nearest neighbour search in 3-dimensional space. I use a KDTree
+    # for it.
+    
     using Distances
     using KDTrees
     using Colors
@@ -18,7 +26,7 @@
 
 
     chdir images: no such file or directory (ENOENT)
-    while loading In[15], in expression starting on line 1
+    while loading In[18], in expression starting on line 1
 
     
 
@@ -91,12 +99,35 @@
 
 
 
-    # Rigorous testing:
     source = readdir()[2:end]
+    labRead(source[16])
+
+
+
+
+![png](output_7_0.png)
+
+
+
+
+    Avg16 = extractVal(colorAverage(labRead(source[16])))
+    mosaic_color_mathcer(Avg16, source)
+    # random baseball picture is also found by finding closest average color
+
+
+
+
+![png](output_8_0.png)
+
+
+
+
+    # Rigorous testing:
+    
     for file in source
       @test labRead(file) == mosaic_color_mathcer(extractVal(colorAverage(labRead(file))), source)
     end
-
+    # It recovers all files based on its average color
 
 
     
