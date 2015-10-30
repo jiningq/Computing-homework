@@ -7,9 +7,6 @@ using Base.Test
 
 #cd("dropbox/computing/images")
 
-img= imread(source[1])
-imglab = convert(Image{Lab}, float64(img))
-
 function lab_read(file)
   img = imread(file)
   imglab = convert(Image{Lab}, float64(img))
