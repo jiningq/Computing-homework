@@ -5,33 +5,32 @@ using ImageView
 using Images
 using Base.Test
 
-cd("images")
+#cd("dropbox/computing/images")
 
-function labRead(file)
+img= imread(source[1])
+imglab = convert(Image{Lab}, float64(img))
+
+function lab_read(file)
   img = imread(file)
-  imglab = convert(Image{Lab}, float32(img))
+  imglab = convert(Image{Lab}, float64(img))
   return imglab
 end
 
-function colorAverage(Image)
+function color_average(Image)
   l = mean([pixel.l for pixel in Image])
   a = mean([pixel.a for pixel in Image])
   b = mean([pixel.b for pixel in Image])
-  Lab{Float32}(l, a, b)
+  return [l, a, b]
 end
 
-function extractVal(color::Lab)
-  return [float64(color.l), float64(color.a), float64(color.b)]
-end
-
-function mosaic_color_mathcer(target, source)
-  avgColor = reduce(hcat,map(x -> extractVal(colorAverage(labRead(x))), source))
+function mosaic_color_matcher(target, source)
+  avgColor = reduce(hcat,map(x -> color_average(lab_read(x)), source))
   tree = KDTree(avgColor)
   id = knn(tree, target, 1)[1][1]
-  return labRead(source[id])
+  return lab_read(source[id])
 end
 
 source = readdir()[2:end]
 for file in source
-  @test labRead(file) == mosaic_color_mathcer(extractVal(colorAverage(labRead(file))), source)
+  @test lab_read(file) == mosaic_color_matcher(color_average(lab_read(file)), source)
 end
