@@ -1,9 +1,7 @@
 cd("dropbox/computing")
 
 
-using DSP, WAV, PyPlot
-
-s, fs = wavread("music/Summer.wav");
+using DSP, PyPlot, WAV
 
 # function which given a segment of wav file, returns its power spectrum
 function gen_spec(s, Fs::Integer, window = hanning, h = 10)
@@ -64,3 +62,34 @@ end
 
 music_lib = build_lib("music")
 match_snippet("test.wav", music_lib)
+
+
+# Database version
+
+Pkg.clone("https://github.com/msainz/Redis.jl")
+using Redis
+
+conn = RedisConnection()
+
+function build_lib_db(folder:: ASCIIString)
+  file_list = readdir(folder)
+  for name in file_list[2 : end]
+    println(string(folder,"/",name))
+    for j in gen_signature(string(folder,"/",name))
+      set(conn, string(j), name)
+    end
+  end
+  return client
+end
+
+# build_lib_db("music");
+function match_snippet(file:: ASCIIString, db:: )
+  a = gen_signature(file)
+  if !exists(conn, string(a))
+    return("Song not in the library!")
+  else
+    #return(a[map(x -> haskey(lib, x), a)])
+    return(get(conn, string(a)))
+  end
+end
+
