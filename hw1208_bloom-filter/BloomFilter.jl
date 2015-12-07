@@ -32,7 +32,7 @@ end
 
 # function for calculating theoretical false positive rates
 function calc_error_rate(NumberOfHashes::Integer, NumberOfBits::Integer, NumOfObjects::Integer)
-	return (1 - ( 1 - 1/NumberOfBits ) ^ (NumberOfHashes * NumOfObjects) )^NumberOfHashes
+	return (1 - ( 1 - 1 / NumberOfBits ) ^ (NumberOfHashes * NumOfObjects) )^NumberOfHashes
 end
 
 
@@ -43,7 +43,7 @@ end
 function multi_hash(element, NumberOfHashes::Integer, NumberOfBits::Integer)
 	hash_a = hash(element, UInt(0))
 	hash_b = hash(element, UInt(42))
-	hashes = [mod(hash_a + i*hash_b, NumberOfBits)+1 for i in 1:NumberOfHashes]
+	hashes = [mod(hash_a + i * hash_b, NumberOfBits) + 1 for i in 1:NumberOfHashes]
 	return hashes
 end
 

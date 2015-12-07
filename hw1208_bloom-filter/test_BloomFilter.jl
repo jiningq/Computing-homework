@@ -2,10 +2,6 @@ using Base.Test
 include("BloomFilter.jl")
 
 (NumberOfHashes, NumberOfBits, NumberOfObjects, Iterations) = map(x -> parse(Int, x), ARGS)
-# NumberOfHashes = 5
-# NumberOfBits = 1000
-# NumberOfObjects = 100
-# Iterations = 10000
 
 # testing functions for getting number of bits and number of hash functions
 BF = build_bloom_filters(NumberOfBits, NumberOfHashes)
@@ -13,7 +9,7 @@ BF = build_bloom_filters(NumberOfBits, NumberOfHashes)
 @test get_number_of_hashes(BF) == NumberOfHashes
 println("Functions for getting number of bits/hashes work.")
 
-# testing that no fasle negatives exist
+# testing that no false negatives exist
 
 RandomStrings = [randstring(5) for i in 1:NumberOfObjects]
 for i in 1:NumberOfObjects
