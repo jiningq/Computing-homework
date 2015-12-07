@@ -1,7 +1,7 @@
 cd("dropbox/computing")
 
 
-using DSP, PyPlot, WAV
+using DSP, WAV
 
 # function which given a segment of wav file, returns its power spectrum
 function gen_spec(s, sample_freq::Integer, window = hanning)
@@ -57,15 +57,13 @@ end
 
 
 # Database version
-
-# Pkg.clone("https://github.com/jkaye2012/Redis.jl")
 using Redis
 
 conn = RedisConnection()
 # this still doesn't work since the package isn't in sync
 # with Julia 0.4
 
-function build_lib_db!(folder::AbstractString, conn)
+function build_lib_db!(conn::Redis.RedisConnection, folder::AbstractString)
   file_list = readdir(folder)
   for name in file_list[2 : end]
     println(string(folder,"/",name))
