@@ -4,7 +4,7 @@ include("BloomFilter.jl")
 (NumberOfHashes, NumberOfBits, NumberOfObjects, Iterations) = map(x -> parse(Int, x), ARGS)
 
 # testing functions for getting number of bits and number of hash functions
-BF = build_bloom_filters(NumberOfBits, NumberOfHashes)
+BF = build_bloom_filter(NumberOfBits, NumberOfHashes)
 @test get_number_of_bits(BF) == NumberOfBits
 @test get_number_of_hashes(BF) == NumberOfHashes
 println("Functions for getting number of bits/hashes work.")
@@ -26,7 +26,7 @@ for i in 1:Iterations
 end
 println(string("False positive rate in ", Iterations, " runs: ", FalsePositives/Iterations))
 println(string("Theoretical false positive rate: ", 
-	calc_error_rate(NumberOfHashes, NumberOfBits, NumberOfObjects)))
+	error_rate(NumberOfHashes, NumberOfBits, NumberOfObjects)))
 
 # running the test script from command line using 5 hash functions,
 # 1000 bits in the array, 100 objects and 10000 iterations for calculating

@@ -4,7 +4,7 @@ type BloomFilter
 	NumberOfHashes::Int
 end
 
-function build_bloom_filters(NumberOfBits::Integer, NumberOfHashes::Integer)
+function build_bloom_filter(NumberOfBits::Integer, NumberOfHashes::Integer)
 	BloomFilter(falses(NumberOfBits), NumberOfBits, NumberOfHashes)
 end
 
@@ -17,7 +17,7 @@ function get_number_of_hashes(BF::BloomFilter)
 end
 
 # function for calculating optimal number of hash functions and bits
-function calc_optimal_bits_hashes(NumOfObjects::Number, ErrorRate::Number)
+function optimal_bits_hashes(NumOfObjects::Number, ErrorRate::Number)
 	if ErrorRate <= 0 || ErrorRate >= 1
 		throw(ArgumentError("Error rate has to be between 0 and 1!"))
 	end
@@ -31,7 +31,7 @@ function calc_optimal_bits_hashes(NumOfObjects::Number, ErrorRate::Number)
 end
 
 # function for calculating theoretical false positive rates
-function calc_error_rate(NumberOfHashes::Integer, NumberOfBits::Integer, NumOfObjects::Integer)
+function error_rate(NumberOfHashes::Integer, NumberOfBits::Integer, NumOfObjects::Integer)
 	return (1 - ( 1 - 1 / NumberOfBits ) ^ (NumberOfHashes * NumOfObjects) )^NumberOfHashes
 end
 
@@ -40,20 +40,22 @@ end
 # (which are the function hash with two different seeds)
 # I read the Bloom Filter package source code before writing the following part.
 
-function multi_hash(element, NumberOfHashes::Integer, NumberOfBits::Integer)
-	hash_a = hash(element, UInt(0))
-	hash_b = hash(element, UInt(42))
-	hashes = [mod(hash_a + i * hash_b, NumberOfBits) + 1 for i in 1:NumberOfHashes]
-	return hashes
+function multi_hash(NumberOfHashes::Integer, NumberOfBits::Integer)
+	function mhash(element)
+		[mod(hash(element, UInt(i)), NumberOfBits) + 1 for i in 1:NumberOfHashes]
+	end
+	return mhash
 end
 
 function insert!(BF::BloomFilter, element)
-    hashes = multi_hash(element, BF.NumberOfHashes, BF.NumberOfBits)
+	mhash = multi_hash(BF.NumberOfHashes, BF.NumberOfBits)
+    hashes = mhash(element)
 	BF.BitArray[hashes] = 1
 end
 
 function is_element(BF::BloomFilter, element)
-	hashes = multi_hash(element, BF.NumberOfHashes, BF.NumberOfBits)
+	mhash = multi_hash(BF.NumberOfHashes, BF.NumberOfBits)
+    hashes = mhash(element)
 	return all(BF.BitArray[hashes])
 end
 
